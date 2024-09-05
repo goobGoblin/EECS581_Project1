@@ -1,2 +1,2 @@
-# eecs448_Project1
-Battleship game for eecs 448
+# eecs581_Project1
+Battleship game for eecs 581
