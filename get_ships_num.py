@@ -1,3 +1,28 @@
+"""
+Program Name: get_ships_num.py
+
+Description:
+This program handles the functionality for allowing the player to select how many ships they would like to use in a Pygame-based Battleship game. It displays options for selecting 1 to 5 ships, processes player input to update ship configurations, and returns the selected values for further game logic.
+
+Inputs:
+- screen: The Pygame screen surface.
+- player1ships, player2ships: Arrays to hold the ship sizes for each player.
+- player1ships2d, player2ships2d: 2D arrays to track ship placements for each player.
+- pos: Mouse position for determining where the player clicked during ship selection.
+
+Output:
+- Displays a selection screen with rectangles for the player to click and choose how many ships they want.
+- Returns updated arrays for player1 and player2 ship configurations and placements.
+
+Code Sources:
+- https://stackoverflow.com/questions/7415109/creating-a-rect-grid-in-pygame (for handling Pygame rectangle grids and user clicks).
+
+Author: Zai Erb
+
+Creation Date: September 2, 2024
+"""
+
+
 from audioop import add
 import math
 from matplotlib.pyplot import pause
