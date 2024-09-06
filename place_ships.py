@@ -1,3 +1,30 @@
+"""
+Program Name: place_ships.py
+
+Description:
+This program handles the logic for ship placement in a Pygame-based Battleship game. It manages the process of both Player 1 and Player 2 placing their ships on the game board. It includes functionality to check the validity of ship placement, ensure ships are placed adjacent to each other, and handle ship addition to the board.
+
+Inputs:
+- screen: The Pygame screen surface.
+- ships: Array of ship lengths to be placed by the player.
+- placedShips: 2D array representing ships that have been placed on the game board.
+- shipBoard: 2D array representing the player's ship grid.
+- pos: Mouse position for determining where the player is trying to place the ship.
+
+Output:
+- Updates the Pygame screen with the ship placements.
+- Returns the updated arrays for player1 and player2 ship placements and the grid.
+
+Code Sources:
+- https://stackoverflow.com/questions/7370801/how-to-measure-elapsed-time-in-python (measuring elapsed time).
+- https://stackoverflow.com/questions/7415109/creating-a-rect-grid-in-pygame (handling Pygame rectangle grids and user clicks).
+
+Author: Zai Erb
+
+Creation Date: September 2, 2024
+"""
+
+
 from audioop import add
 import math
 from matplotlib.pyplot import pause
