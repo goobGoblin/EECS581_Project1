@@ -1,3 +1,28 @@
+"""
+Program Name: battleship.py
+
+Description:
+This program sets up and manages a Pygame-based Battleship game. It includes functions to create grids, manage hits, misses, and ship placements, as well as handling game turns and logic. The game has support for both single-player and multiplayer modes (with multiplayer being a future implementation).
+
+Inputs:
+- screen: The Pygame screen surface.
+- pos: Mouse position for user clicks to determine ship placements and attacks.
+- hits, misses: Arrays that track the hits and misses for each player.
+- shipBoard, targetBoard: Grids representing the player's ships and attack targets.
+
+Output:
+- Displays and updates the game boards, showing ship placements, hits, misses, and game state (turns, sunk ships, etc.).
+
+Code Sources:
+- https://stackoverflow.com/questions/33963361/how-to-make-a-grid-in-pygame (creating a grid in Pygame)
+- https://stackoverflow.com/questions/7415109/creating-a-rect-grid-in-pygame (handling mouse clicks on grid cells)
+- Additional logic inspired by threads on creating a Snake game in Pygame.
+
+Author: Zai Erb
+
+Creation Date: September 2, 2024
+"""
+
 import copy
 from operator import truediv
 from matplotlib.pyplot import pause
