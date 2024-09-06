@@ -1,3 +1,30 @@
+"""
+Program Name: singleplayer.py
+
+Description:
+This program contains the game loop and logic for running a multiplayer version of a Pygame-based Battleship game. It handles the placement of ships for both Player 1 and Player 2, manages turns, updates the game board with hits and misses, and determines when the game is over. The game operates in two-player mode, alternating between the players until one player wins by sinking all of the opponent's ships.
+
+Inputs:
+- pos: Mouse position for determining player actions on the grid.
+- player1ships, player2ships: Arrays containing the lengths of the ships for Player 1 and Player 2.
+- player1placedShips, player2placedShips: 2D arrays representing the positions of the ships for both players.
+- player1hits, player2hits: Arrays tracking the hits made by each player.
+- player1misses, player2misses: Arrays tracking the misses made by each player.
+
+Output:
+- Displays updates to the game board, including ship placements, hits, misses, and win/loss messages.
+- Alternates between Player 1 and Player 2 turns, showing the appropriate updates after each move.
+
+Code Sources:
+- Pygame documentation for event handling and drawing.
+- Based on previously implemented grid and logic for Battleship game in Pygame.
+
+Author: Zai Erb
+
+Creation Date: September 2, 2024
+"""
+
+
 import copy
 from operator import truediv
 from matplotlib.pyplot import pause
