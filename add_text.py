@@ -1,3 +1,27 @@
+"""
+Program Name: add_text.py
+
+Description:
+This program handles the display of text, labels, and notifications for a two-player game involving ships.
+It includes functions to show labels on a grid (such as ships and targets) and notifications during gameplay transitions
+(such as turn switching and timeouts).
+
+Inputs:
+- screen: The Pygame screen surface where text, labels, and other elements are drawn.
+- text: Text string for dynamic messages (e.g., turn-switching message).
+
+Output:
+- Displays text labels for ships and targets, adds a black screen for player turns, and shows timeout messages on the Pygame window.
+
+Code Sources:
+- https://www.geeksforgeeks.org/python-display-text-to-pygame-window/ (text in Pygame)
+- https://stackoverflow.com/questions/10467863/how-to-remove-replace-text-in-pygame (handling text refresh in Pygame)
+
+Author: Zai Erb
+
+Creation Date: September 2, 2024
+"""
+
 from matplotlib.pyplot import pause
 import pygame
 import sys
