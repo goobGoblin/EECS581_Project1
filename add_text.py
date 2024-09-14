@@ -97,3 +97,14 @@ def add_labels_middle(screen):
         textRect.center = (245, y)
         screen.blit(text, textRect)
         counter = counter + 1
+# asks player if they want to play again
+def ask_play_again(screen):
+    screen.fill(BLACK)
+    font = pygame.font.Font('freesansbold.ttf', 16)
+    text = font.render('Do you want to play again? (Y/N)', True, RED)
+    textRect = text.get_rect()
+    textRect.center = (245, 200)
+    screen.blit(text, textRect)
+    pygame.display.update()
+    # wait for user input
+    

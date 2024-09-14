@@ -19,7 +19,7 @@ Code Sources:
 - Additional logic inspired by threads on creating a Snake game in Pygame.
 
 Author: Zai Erb
-
+Edited by: Harrison Reed
 Creation Date: September 2, 2024
 """
 
@@ -42,12 +42,23 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 # height of window for pygame
-WINDOW_HEIGHT = 400
-#width of window for pygame
-WINDOW_WIDTH = 490
-#initializes screen in pygame
-SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
+#Initialize pygame, mixer, and load audio files
+#####
+pygame.init()
+pygame.mixer.init()
+BAUDIO = pygame.mixer.Sound("assets/waves.wav")
+HAUDIO = pygame.mixer.Sound("assets/hit.mp3")
+MAUDIO = pygame.mixer.Sound("assets/miss.mp3")
+CAUDIO = pygame.mixer.Sound("assets/cannon.mp3")
+BCHANNEL = pygame.mixer.Channel(0)
+ACHANNEL = pygame.mixer.Channel(1)
+BCHANNEL.play(BAUDIO, loops=-1)
+windowInfo = pygame.display.Info()
+WINDOW_HEIGHT = windowInfo.current_w#400
+#width of window for pygame
+WINDOW_WIDTH = windowInfo.current_h#600
+SCREEN = pygame.display.set_mode((600,400), flags = pygame.SCALED) #Added scaling(Harrison), TODO add dynamic rezising 
 # following code is inspired and similar to thread on creating a grid for a snake game in pygane
 # https://stackoverflow.com/questions/33963361/how-to-make-a-grid-in-pygame
 # creates grid (10x10) with width and height of 20 for each block
@@ -69,7 +80,7 @@ def createPlayer1ShipGrid():
 def createPlayer1TargetGrid():
     blockSize = 20 #Set the size of the grid block
     playerBoard = []
-    for x in range(260, WINDOW_WIDTH-30, blockSize):
+    for x in range(260, 460, blockSize):
         subBoard = []
         for y in range(100, 300, blockSize):
             rect = pygame.Rect(x, y, blockSize, blockSize)
@@ -109,15 +120,16 @@ def main():
     # https://stackoverflow.com/questions/33963361/how-to-make-a-grid-in-pygame
     global SCREEN, CLOCK
     # initializes pygame
-    pygame.init()
+    #pygame.init()
     # creates clock in pygame
     CLOCK = pygame.time.Clock()
     #fill screen to black
-    SCREEN.fill(BLACK)
+    #SCREEN.fill(BLACK)
     # to implement multiplayer game mode simply create a get_game_mode.py file that displays options for number of players and sets the mode based on what the user selects
+    CLOCK.tick(60)
     isSingleplayer = 1; #get_game_mode.set_mode(SCREEN) - FOR MULTIPLAYER IMPLEMENTATION
     if(isSingleplayer):
-        singleplayer.run()
+        singleplayer.run() #Maybe add multithreading in the future. (Harrison)
     # else:
         # multiplayer.run()
 
@@ -154,12 +166,16 @@ def checkForCollision(targetBoard, shipBoard, pos, hits, misses, shipsPlaced, sh
         # if it is in their ships, you have a hit
         inShipsList = inShips(shipsPlaced, tempRectShip)
         if inShipsList:
+            pygame.time.delay(1500) 
+            ACHANNEL.play(HAUDIO)
             add_text.add_text(SCREEN, 'You hit a ship!')
             hits.append(tempRectTarget)
             hits.append(tempRectShip)
             removeFromShipsCopy(tempRectShip, shipsCopy)
         else:
             # otherwise you missed
+            pygame.time.delay(1000) 
+            ACHANNEL.play(MAUDIO) #Short delay to allow for a little bit of tension
             add_text.add_text(SCREEN, 'You did not hit a ship!')
             misses.append(tempRectTarget)
             misses.append(tempRectShip)
@@ -205,7 +221,6 @@ def getRow(board, rect):
             tempRect = (board[x])[y]
             if tempRect == rect:
                 return x
-    #print(tempRect)
     return -1
 
 # return column of a rectangle
@@ -216,7 +231,6 @@ def getCol(board, rect):
             tempRect = (board[x])[y]
             if tempRect == rect:
                 return y
-    #print(tempRect)
     return -1
 
 # check if a rectangle is in the hits array
@@ -247,6 +261,7 @@ def inHitShips(hits, rect):
         if rect == x:
             return True
     return False
+    
 
 # following code is inspired and similar to thread on creating a grid for a snake game in pygane
 # https://stackoverflow.com/questions/33963361/how-to-make-a-grid-in-pygame

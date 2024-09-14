@@ -59,7 +59,6 @@ def get_ships(player1ships, player2ships, screen, player1ships2d, player2ships2d
                     if index != -1:
                         optionsChosen = True # set optionsChosen to true so loop will end
                         screen.fill(BLACK, (0, 0, 490, 400))
-                        print(index)
                         if index == 1:
                             # 1x1
                             player1ships=[1]
