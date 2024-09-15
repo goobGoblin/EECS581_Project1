@@ -5,9 +5,10 @@ Battleship game for eecs 581
 run pip(3) install -r requirements.txt
 
 ## Execution
-python(3) battleship.py
-(Please note if running WSL, the program will probably not run. Due to audio device issues. Running it in powershell will work though)
-
+python(3) battleship.py\
+```diff
+-Please note if running WSL, the program will probably not run. Due to audio device issues. Running it in powershell will work though.
+```
 ### Platform 
 - This game is built using pygame
 - You can get started at this site (https://www.pygame.org/wiki/GettingStarted)
