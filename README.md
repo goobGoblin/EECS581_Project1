@@ -6,6 +6,7 @@ run pip(3) install -r requirements.txt
 
 ## Execution
 python(3) battleship.py
+(Please note if running WSL, the program will probably not run. Due to audio device issues. Running it in powershell will work though)
 
 ### Platform 
 - This game is built using pygame
