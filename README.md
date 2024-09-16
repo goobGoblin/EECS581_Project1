@@ -1,3 +1,5 @@
+##[Time Sheet]https://docs.google.com/spreadsheets/d/1NkeWRwhWjA8Jd4uU6vHxwF62o9fGzpyDZU7IZHxBvIQ/edit?usp=sharing
+
 # eecs581_Project1
 Battleship game for eecs 581
 
