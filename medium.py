@@ -11,11 +11,34 @@ class MediumAI(BattleshipAI):
         self.current_direction = None  # Current direction AI is shooting in
         self.checked_directions = []  # Keep track of tried directions from a hit
 
+    def print_board_debug(self, target_board, ship_board, hits, misses):
+        """
+        Debugging method to print the current state of the board, including ships.
+        """
+        print("\n--- Target Board Status (S = Ship, H = Hit, M = Miss) ---")
+        for row in range(len(target_board)):
+            row_status = ""
+            for col in range(len(target_board[0])):
+                rect = target_board[row][col]
+                if rect in hits:
+                    row_status += " H "  # Hit
+                elif rect in misses:
+                    row_status += " M "  # Miss
+                elif rect in ship_board[row]:
+                    row_status += " S "  # Ship
+                else:
+                    row_status += " . "  # Untouched
+            print(row_status)
+        print("\n")
+
     def make_move(self, target_board, ship_board, hits, misses):
         """
         The AI shoots randomly until a hit is found, then starts "hunting"
         in orthogonal directions to sink the ship.
         """
+        print("Current Mode: Hunting" if self.hunting_mode else "Current Mode: Random")
+        self.print_board_debug(target_board, ship_board, hits, misses)
+
         if self.hunting_mode:
             return self.hunt_ship(target_board, ship_board, hits, misses)
         else:
@@ -36,6 +59,7 @@ class MediumAI(BattleshipAI):
             
             # Check if the rect has already been hit or missed
             if rect not in hits and rect not in misses:
+                print(f"AI shooting at ({row}, {col})")
                 self.shots.add((row, col))  # Record the shot for tracking
                 
                 # Check if it hits a ship (using ship_board to check for ships)
@@ -66,6 +90,7 @@ class MediumAI(BattleshipAI):
 
         # Check that the next position is within bounds and hasn't been fired at
         if (0 <= row < len(target_board)) and (0 <= col < len(target_board[0])) and rect not in self.shots:
+            print(f"AI hunting at ({row}, {col}) in direction {self.current_direction}")
             self.shots.add((row, col))
             if rect in ship_board[row]:
                 print("AI hit at", row, col)
@@ -79,6 +104,7 @@ class MediumAI(BattleshipAI):
             return row, col
         else:
             # If the next position is invalid or already shot, switch direction
+            print(f"AI switching direction from {self.current_direction}")
             self.current_direction = self.get_next_direction()
             return self.hunt_ship(target_board, ship_board, hits, misses)
 
@@ -104,9 +130,11 @@ class MediumAI(BattleshipAI):
         if remaining_directions:
             direction = random.choice(remaining_directions)
             self.checked_directions.append(direction)
+            print(f"AI switching to direction {direction}")
             return direction
         else:
             # If all directions are exhausted, reset to random mode
+            print("All directions exhausted, switching to random mode")
             self.hunting_mode = False
             self.current_direction = None
             self.checked_directions = []
