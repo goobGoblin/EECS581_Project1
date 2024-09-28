@@ -1,30 +1,3 @@
-"""
-Program Name: singleplayer.py
-
-Description:
-This program contains the game loop and logic for running a multiplayer version of a Pygame-based Battleship game. It handles the placement of ships for both Player 1 and Player 2, manages turns, updates the game board with hits and misses, and determines when the game is over. The game operates in two-player mode, alternating between the players until one player wins by sinking all of the opponent's ships.
-
-Inputs:
-- pos: Mouse position for determining player actions on the grid.
-- player1ships, player2ships: Arrays containing the lengths of the ships for Player 1 and Player 2.
-- player1placedShips, player2placedShips: 2D arrays representing the positions of the ships for both players.
-- player1hits, player2hits: Arrays tracking the hits made by each player.
-- player1misses, player2misses: Arrays tracking the misses made by each player.
-
-Output:
-- Displays updates to the game board, including ship placements, hits, misses, and win/loss messages.
-- Alternates between Player 1 and Player 2 turns, showing the appropriate updates after each move.
-
-Code Sources:
-- Pygame documentation for event handling and drawing.
-- Based on previously implemented grid and logic for Battleship game in Pygame.
-
-Author: Zai Erb
-
-Creation Date: September 2, 2024
-"""
-
-
 import copy
 from operator import truediv
 from matplotlib.pyplot import pause
@@ -35,6 +8,7 @@ import place_ships
 import get_ships_num
 import battleship
 # import get_game_mode
+import easy
 
 def run():
 
@@ -47,6 +21,7 @@ def run():
     battleship.player1placedShips = arrays[2]
     battleship.player2placedShips = arrays[3]
     clock = pygame.time.Clock()
+    ai = easy.EasyAI()
     #run while the game is not ended
     while not battleship.gameover:
         
@@ -77,12 +52,12 @@ def run():
             add_text.add_labels_middle(battleship.SCREEN)
             add_text.add_labels_ships(battleship.SCREEN)
         # if it is player 2 turn, say that and print their boards
-        else:
+        '''else:
             add_text.add_text(battleship.SCREEN, 'Player 2 Turn')
             battleship.printShipBoard(battleship.player2ShipBoard, battleship.player2placedShips, battleship.player1hits)
             battleship.printBoard(battleship.player2TargetBoard, battleship.player2hits, battleship.player2misses)
             add_text.add_labels_middle(battleship.SCREEN)
-            add_text.add_labels_ships(battleship.SCREEN)
+            add_text.add_labels_ships(battleship.SCREEN)'''
         # handles events in pygame
             # if the user wants to quit, close pygame
             # if the user clicks, we respond accordingly
@@ -126,39 +101,48 @@ def run():
                     if not battleship.gameover:
                         add_text.add_black_screen(battleship.SCREEN)
                         pygame.display.update()
-                        pygame.time.wait(2000)#Updated to fix bug where game still accepts input during black screen(The loop)
+                        pygame.time.wait(1000)#Updated to fix bug where game still accepts input during black screen(The loop)
                         pygame.event.clear()#clear the queue to avoid input during black screen
                     battleship.player1Turn = False
-            else:
-                    # otherwise repeat for player 2
-                battleship.ACHANNEL.play(battleship.CAUDIO) #sound effect for firing cannon
-                played = battleship.checkForCollision(battleship.player2TargetBoard, battleship.player1ShipBoard, pos, battleship.player2hits, battleship.player2misses, battleship.player1placedShips, battleship.copyPlayer1placedShips)
-                pygame.time.delay(1000) #Short delay to allow for a little bit of tension
-                if played:
-                    battleship.printShipBoard(battleship.player2ShipBoard, battleship.player2placedShips, battleship.player1hits)
+                if not battleship.gameover:
+                    #Ai Move
+                    add_text.add_text(battleship.SCREEN, 'AI is making a move...')
+                    #battleship.printShipBoard(battleship.player2ShipBoard, battleship.player2placedShips, battleship.player1hits)
                     battleship.printBoard(battleship.player2TargetBoard, battleship.player2hits, battleship.player2misses)
                     add_text.add_labels_middle(battleship.SCREEN)
                     add_text.add_labels_ships(battleship.SCREEN)
+                    battleship.ACHANNEL.play(battleship.CAUDIO) #sound effect for firing cannon
                     pygame.display.update()
-                    sunkenShip = battleship.shipSunk(battleship.copyPlayer1placedShips)
-                    if(sunkenShip):
-                        add_text.add_text(battleship.SCREEN, 'You sunk a ship!')
+                    row, col = ai.make_move()
+                    print(f'{row}, {col}')
+                    pygame.time.delay(1000)
+                    played = ai.checkForCollision(battleship.player2TargetBoard, battleship.player1ShipBoard, row, col, battleship.player2hits, battleship.player2misses, battleship.player1placedShips, battleship.copyPlayer1placedShips)
+                    print("played")
+                    if played:
+                        #battleship.printShipBoard(battleship.player2ShipBoard, battleship.player2placedShips, battleship.player1hits)
+                        battleship.printBoard(battleship.player2TargetBoard, battleship.player2hits, battleship.player2misses)
+                        #add_text.add_labels_middle(battleship.SCREEN)
+                        #add_text.add_labels_ships(battleship.SCREEN)
                         pygame.display.update()
-                        ended = battleship.gameIsOver(battleship.copyPlayer1placedShips)
-                        if ended:
-                            battleship.gameover = True
-                            add_text.add_text(battleship.SCREEN, 'Player 2 won!')
+                        sunkenShip = battleship.shipSunk(battleship.copyPlayer1placedShips)
+                        if(sunkenShip):
+                            add_text.add_text(battleship.SCREEN, 'You sunk a ship!')
                             pygame.display.update()
-                            pygame.time.wait(2000) #Let the game sit for a little before closing
-                            add_text.ask_play_again(battleship.SCREEN)
-                    pause(1)
-                    if not battleship.gameover:
-                        add_text.add_black_screen(battleship.SCREEN)
-                        pygame.display.update()
-                        pygame.time.wait(2000) #Updated to fix bug where game still accepts input during black screen(The loop)
-                        pygame.event.clear() #Clear the queue to avoid input during black screen
-                        
-                    battleship.player1Turn = True
+                            ended = battleship.gameIsOver(battleship.copyPlayer1placedShips)
+                            if ended:
+                                battleship.gameover = True
+                                add_text.add_text(battleship.SCREEN, 'Player 2 won!')
+                                pygame.display.update()
+                                pygame.time.wait(2000) #Let the game sit for a little before closing
+                                add_text.ask_play_again(battleship.SCREEN)
+                        pause(1)
+                        if not battleship.gameover:
+                            add_text.add_black_screen(battleship.SCREEN)
+                            pygame.display.update()
+                            pygame.time.wait(2000) #Updated to fix bug where game still accepts input during black screen(The loop)
+                            pygame.event.clear() #Clear the queue to avoid input during black screen
+                            
+                        battleship.player1Turn = True
         
         pygame.display.update()
     
