@@ -100,7 +100,7 @@ def run():
             if(battleship.player1Turn):
                 battleship.ACHANNEL.play(battleship.CAUDIO) #sound effect for firing cannon
                 pygame.time.delay(1000) #Short delay to allow for a little bit of tension
-                played = battleship.checkForCollision(battleship.player1TargetBoard, battleship.player2ShipBoard, pos, battleship.player1hits, battleship.player1misses, battleship.player2placedShips, battleship.copyPlayer2placedShips)
+                played = battleship.checkForCollision(battleship.player1TargetBoard, battleship.player2ShipBoard, pos, battleship.player1hits, battleship.player1misses, battleship.player2placedShips, battleship.copyPlayer2placedShips, battleship.player1BlastRadius)
                 if played: 
                     # if they made a valid move, update the boards
                     battleship.printShipBoard(battleship.player1ShipBoard, battleship.player1placedShips, battleship.player2hits)
@@ -132,7 +132,7 @@ def run():
             else:
                     # otherwise repeat for player 2
                 battleship.ACHANNEL.play(battleship.CAUDIO) #sound effect for firing cannon
-                played = battleship.checkForCollision(battleship.player2TargetBoard, battleship.player1ShipBoard, pos, battleship.player2hits, battleship.player2misses, battleship.player1placedShips, battleship.copyPlayer1placedShips)
+                played = battleship.checkForCollision(battleship.player2TargetBoard, battleship.player1ShipBoard, pos, battleship.player2hits, battleship.player2misses, battleship.player1placedShips, battleship.copyPlayer1placedShips, battleship.player2BlastRadius)
                 pygame.time.delay(1000) #Short delay to allow for a little bit of tension
                 if played:
                     battleship.printShipBoard(battleship.player2ShipBoard, battleship.player2placedShips, battleship.player1hits)
