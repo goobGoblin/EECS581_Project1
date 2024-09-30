@@ -23,7 +23,6 @@ class BattleshipAI(ABC):
             return False
         else:
             # otherwisecheck if you already hit the ship or already missed it, since you would need new user input
-            tempRectTarget = (targetBoard[row])[col]
             tempRectShip = (shipBoard[row])[col]
             alreadyHit = battleship.inHits(hits, tempRectShip)
             alreadyMissed = battleship.inMisses(misses, tempRectShip)
