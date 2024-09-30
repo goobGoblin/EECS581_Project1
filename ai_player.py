@@ -2,9 +2,9 @@ import pygame
 import sys
 import add_text
 import place_ships
-import get_ships_num
 import battleship
 from abc import ABC, abstractmethod
+from matplotlib.pyplot import pause
 import time
 import random
 
