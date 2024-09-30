@@ -72,6 +72,7 @@ def add_labels_ships(screen):
         screen.blit(text, textRect)
         counter = counter + 1
 
+
 # adds column labels to target screen
 def add_labels_targets(screen):
     screen.fill(BLACK, (270,90, 190, 8))
