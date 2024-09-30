@@ -55,50 +55,6 @@ class BattleshipAI(ABC):
         # return true since if you make it this far is was a valud move
         return True
 
-    '''def placeShips(self, screen, ships, placedShips, shipBoard):
-        shipsCopy = ships
-        index = 0
-        shipLength = shipsCopy[0]
-        initialLength = shipLength
-        startTime = time.time()
-        while len(shipsCopy) > 0:
-            print(f' len shipcopy: {len(shipsCopy)}')
-            currentTime = time.time()
-            if(shipLength > 0):
-                x = random.randint(30, 230)
-                y = random.randint(100, 300)
-                pos = (x, y)
-                battleship.printShipBoard(shipBoard, placedShips, [])
-                print('placing ship')
-                attempt = place_ships.addShip(shipBoard, placedShips, index, pos)
-                placedShips = attempt[0]
-                wasPlaced = attempt[1]
-                if(wasPlaced):
-                    print('ship placed')
-                    if (x < 130):
-                        for s in range(shipLength - 1):
-                            x += 20
-                            print(x)
-                            pos = (x,y)
-                            place_ships.addShip(shipBoard, placedShips, index, pos)
-                            startTime = time.time()
-                            shipLength = shipLength - 1
-                            print(shipLength)
-                    else:
-                        for s in range(shipLength - 1):
-                            x -= 20
-                            pos = (x,y)
-                            place_ships.addShip(shipBoard, placedShips, index, pos)
-                            startTime = time.time()
-                            shipLength = shipLength - 1
-                pygame.display.update()
-            else:
-                shipsCopy.pop(0)
-                print(len(shipsCopy))
-                if(len(shipsCopy) != 0):
-                    shipLength = shipsCopy[0]
-                    initialLength = shipLength
-                    index = index + 1'''
     def placeShips(self, screen, ships, placedShips, shipBoard):
         screen.fill((0, 0, 0))
         message = "Please wait while AI places ships"
