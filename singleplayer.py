@@ -45,6 +45,7 @@ def run(difficulty):
     battleship.player1placedShips = arrays[2]
     battleship.player2placedShips = arrays[3]
     clock = pygame.time.Clock()
+    ship_hit = False
     
     if difficulty == "easy":
         ai = easy.EasyAI()
