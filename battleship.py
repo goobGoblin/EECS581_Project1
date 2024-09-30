@@ -149,53 +149,81 @@ def createShallowCopy(ships):
 def checkForCollision(targetBoard: GRID, shipBoard: GRID, centerPos: Tuple[int, int], hits: List[pygame.Rect], misses: List[pygame.Rect], shipsPlaced: GRID, shipsCopy: GRID, blastRadius: int) -> bool:
     # get the rect object and row and col
     rect = getRectangle(targetBoard, centerPos)
-    row = getRow(targetBoard, rect)
-    col = getCol(targetBoard, rect)
+    centerRow = getRow(targetBoard, rect)
+    centerCol = getCol(targetBoard, rect)
     # if you have an invalid row, then you did not hit anything and need new user input
-    if row == -1 or col == -1:
+    if centerRow == -1 or centerCol == -1:
         return False
     else:
         # otherwisecheck if you already hit the ship or already missed it, since you would need new user input
-        tempRectTarget = (targetBoard[row])[col]
-        tempRectShip = (shipBoard[row])[col]
+        tempRectShip = (shipBoard[centerRow])[centerCol]
         alreadyHit = inHits(hits, tempRectShip)
         alreadyMissed = inMisses(misses, tempRectShip)
         if alreadyHit or alreadyMissed: 
             return False
-
-        # if it is in their ships, you have a hit
-        inShipsList = inShips(shipsPlaced, tempRectShip)
-        if inShipsList:
+        
+        hit = False
+        tilesShot = tilesInShot(shipBoard, centerRow, centerCol, blastRadius)
+        for row, col in tilesShot:
+            inShipsList = inShips(shipsPlaced, shipBoard[row][col])
+            if inShipsList:
+                hit = True
+                hits.append(targetBoard[row][col])
+                hits.append(shipBoard[row][col])
+                removeFromShipsCopy(shipBoard[row][col], shipsCopy)
+            else:
+                misses.append(targetBoard[row][col])
+                misses.append(shipBoard[row][col])
+        if hit: 
             pygame.time.delay(1500) 
             ACHANNEL.play(HAUDIO)
             add_text.add_text(SCREEN, 'You hit a ship!')
-            hits.append(tempRectTarget)
-            hits.append(tempRectShip)
-            removeFromShipsCopy(tempRectShip, shipsCopy)
-        else:
+        else: 
             # otherwise you missed
             pygame.time.delay(1000) 
             ACHANNEL.play(MAUDIO) #Short delay to allow for a little bit of tension
             add_text.add_text(SCREEN, 'You did not hit a ship!')
-            misses.append(tempRectTarget)
-            misses.append(tempRectShip)
+
     # return true since if you make it this far is was a valud move
     return True
 
+def tilesInShot(grid: GRID, centerRow: int, centerCol: int, radius: int) -> List[Tuple[int, int]]:
+    """
+    Given a 2D array representation of a grid, returns a list of rows, columns for every grid item 
+    <radius> distance away from <centerRow> and <centerCol>. Diagonals are a distance of 1 away. 
+    """
+    gridSize = len(grid)
+    results = []
+    
+    # Define the possible bounds for the rows/cols in the shot
+    minRow = centerRow - radius
+    maxRow = centerRow + radius
+    minCol = centerCol - radius
+    maxCol = centerCol + radius
+
+    for row in range(minRow,  maxRow + 1):
+        for col in range(minCol, maxCol + 1):
+            if 0 <= row < gridSize and 0 <= col < gridSize:
+                results.append((row, col))
+    
+    return results
+
+
 # removes rect from the copy so that you can track what ships have been hit    
-def removeFromShipsCopy(rect, shipsCopy):
+def removeFromShipsCopy(rect: pygame.Rect, shipsCopy: GRID):
     for x in shipsCopy:
         for y in x:
             if rect == y:
                 x.remove(y)
 
 #checks if an array within 2-d array is empty. If so you have a sunk ship
-def shipSunk(shipsCopy) -> bool:
+def shipsSunk(shipsCopy) -> int:
+    sunk = 0
     for x in shipsCopy:
         if(len(x) == 0):
             shipsCopy.remove(x)
-            return True
-    return False
+            sunk += 1
+    return sunk
 
 # if shipsCopy has length 0 then all ships are sunk and game is over
 def gameIsOver(shipsCopy) -> bool:

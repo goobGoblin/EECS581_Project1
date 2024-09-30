@@ -25,8 +25,6 @@ Creation Date: September 2, 2024
 """
 
 
-import copy
-from operator import truediv
 from matplotlib.pyplot import pause
 import pygame
 import sys
@@ -109,9 +107,10 @@ def run():
                     add_text.add_labels_ships(battleship.SCREEN)
                     pygame.display.update()
                     # check for a sunk ship
-                    sunkenShip = battleship.shipSunk(battleship.copyPlayer2placedShips)
+                    shipsSunk = battleship.shipsSunk(battleship.copyPlayer2placedShips)
                     # if they sunk a ship, check if all ships are sunk
-                    if(sunkenShip):
+                    if(shipsSunk > 0):
+                        battleship.player1BlastRadius += shipsSunk
                         add_text.add_text(battleship.SCREEN, 'You sunk a ship!')
                         pygame.display.update()
                         ended = battleship.gameIsOver(battleship.copyPlayer2placedShips)
@@ -140,8 +139,9 @@ def run():
                     add_text.add_labels_middle(battleship.SCREEN)
                     add_text.add_labels_ships(battleship.SCREEN)
                     pygame.display.update()
-                    sunkenShip = battleship.shipSunk(battleship.copyPlayer1placedShips)
-                    if(sunkenShip):
+                    shipsSunk = battleship.shipsSunk(battleship.copyPlayer1placedShips)
+                    if(shipsSunk > 0):
+                        battleship.player2BlastRadius += shipsSunk
                         add_text.add_text(battleship.SCREEN, 'You sunk a ship!')
                         pygame.display.update()
                         ended = battleship.gameIsOver(battleship.copyPlayer1placedShips)
@@ -180,12 +180,14 @@ def run():
                     battleship.player2ready = False
                     battleship.player1hits = []
                     battleship.player1misses = []
+                    battleship.player1BlastRadius = 0
                     battleship.player2hits = []
                     battleship.player2misses = []
                     battleship.player1placedShips = []
                     battleship.player2placedShips = []
                     battleship.player1ships = []
                     battleship.player2ships = []
+                    battleship.player2BlastRadius = 0
                     battleship.SCREEN.fill((0,0,0))
                     pygame.display.update()
                     run()
