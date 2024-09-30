@@ -22,6 +22,7 @@ class BattleshipAI(ABC):
         print("checking for collision")
         # if you have an invalid row, then you did not hit anything and need new user input
         if row == -1 or col == -1:
+            print('row -1 block')
             return False
         else:
             # otherwisecheck if you already hit the ship or already missed it, since you would need new user input
@@ -29,11 +30,13 @@ class BattleshipAI(ABC):
             alreadyHit = battleship.inHits(hits, tempRectShip)
             alreadyMissed = battleship.inMisses(misses, tempRectShip)
             if alreadyHit or alreadyMissed: 
+                print('already hit block')
                 return False
 
             hit = False
             tilesShot = battleship.tilesInShot(shipBoard, row, col, blastRadius)
             for row, col in tilesShot:
+                print(f'Row and col: {row}, {col}')
                 self.shots.add((row, col))
                 inShipsList = battleship.inShips(shipsPlaced, shipBoard[row][col])
                 if inShipsList:

@@ -28,7 +28,9 @@ import pygame
 from typing import List, Tuple, Optional, Iterable
 
 import add_text
+import sys
 import singleplayer
+import multiplayer
 # import get_game_mode
 # import multiplayer
 
@@ -114,6 +116,65 @@ player2ready = False
 gameover = False
 
 
+def draw_menu_options(): 
+    # used offset to move squares to center
+    offset = 45
+    # create rects for each choice
+    rect1 = pygame.Rect(10+offset,200,50,50)
+    rect2 = pygame.Rect(90+offset,200,50,50)
+    rect3 = pygame.Rect(170+offset,200,50,50)
+    rect4 = pygame.Rect(250+offset,200,50,50)
+    # draw each rect
+    pygame.draw.rect(SCREEN, WHITE, rect1, 1)
+    pygame.draw.rect(SCREEN, WHITE, rect2, 1)
+    pygame.draw.rect(SCREEN, WHITE, rect3, 1)
+    pygame.draw.rect(SCREEN, WHITE, rect4, 1)
+    # add text to boxes
+    font = pygame.font.Font('freesansbold.ttf', 16)
+    text = font.render('1v1', True, RED)
+    textRect = text.get_rect()
+    textRect.center = (35+offset, 225)
+    SCREEN.blit(text, textRect)
+    text = font.render('Easy AI', True, RED)
+    textRect = text.get_rect()
+    textRect.center = (115+offset, 225)
+    SCREEN.blit(text, textRect)
+    text = font.render('Medium AI', True, RED)
+    textRect = text.get_rect()
+    textRect.center = (195+offset, 225)
+    SCREEN.blit(text, textRect)
+    text = font.render('Hard AI', True, RED)
+    textRect = text.get_rect()
+    textRect.center = (275+offset, 225)
+    SCREEN.blit(text, textRect)
+
+
+def main_menu(): 
+    from get_ships_num import get_index
+    option_chosen = False
+    while not option_chosen: 
+        draw_menu_options()
+        pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # get the box that was selected and assign ships accordingly
+                index = get_index(SCREEN, pos) 
+                if index != -1: 
+                    option_chosen = True
+                    SCREEN.fill(BLACK, (0, 0, 490, 400))
+                    if index == 1: 
+                        multiplayer.run()
+                    elif index == 2: 
+                        singleplayer.run("easy")
+                    elif index == 3: 
+                        singleplayer.run("medium")
+                    elif index == 4: 
+                        singleplayer.run("hard")
+        pygame.display.update()
+
 # main handles all the logic and passing between files
 def main():
     # following code is inspired and similar to thread on creating a grid for a snake game in pygane
@@ -127,11 +188,8 @@ def main():
     #SCREEN.fill(BLACK)
     # to implement multiplayer game mode simply create a get_game_mode.py file that displays options for number of players and sets the mode based on what the user selects
     CLOCK.tick(60)
-    isSingleplayer = 1; #get_game_mode.set_mode(SCREEN) - FOR MULTIPLAYER IMPLEMENTATION
-    if(isSingleplayer):
-        singleplayer.run("hard") #Maybe add multithreading in the future. (Harrison)
-    # else:
-        # multiplayer.run()
+    main_menu()
+
 
 
 # creates a shallow copy of a 2d array

@@ -23,7 +23,7 @@ class HardAI(BattleshipAI):
         else:
             print("No more targets left.")
             return None'''
+        print(f'targets: {self.targets}')
         row, col = self.targets[0][0], self.targets[0][1]
         self.targets.pop(0)
-        
         return row, col
