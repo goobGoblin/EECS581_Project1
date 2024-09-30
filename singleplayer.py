@@ -35,8 +35,9 @@ import get_ships_num
 import battleship
 import easy
 import medium
+import hard
 
-def run():
+def run(difficulty):
     print("singleplayer")
     arrays = get_ships_num.get_ships(battleship.player1ships, battleship.player2ships, battleship.SCREEN, battleship.player1placedShips, battleship.player2placedShips)
     battleship.player1ships = arrays[0]
@@ -44,10 +45,18 @@ def run():
     battleship.player1placedShips = arrays[2]
     battleship.player2placedShips = arrays[3]
     clock = pygame.time.Clock()
-    easy_ai = easy.EasyAI()
-    ai = medium.MediumAI()
     ship_hit = False
+    
+    if difficulty == "easy":
+        ai = easy.EasyAI()
+    elif difficulty == "medium":
+        ai = medium.MediumAI()
+    elif difficulty == "hard":
+        ai = hard.HardAI()
+    else: 
+        ai = None
 
+    #run while the game is not ended
     while not battleship.gameover:
         pos = pygame.mouse.get_pos()
         
@@ -57,14 +66,15 @@ def run():
             battleship.copyPlayer1placedShips = copy.deepcopy(battleship.player1placedShips)
         
         if not battleship.player2ready:
-            place_ships.placePlayer2Ships(battleship.SCREEN, battleship.player2ships, battleship.player2placedShips, battleship.player2ShipBoard)
+            ai.placeShips(battleship.SCREEN, battleship.player2ships, battleship.player2placedShips, battleship.player2ShipBoard)
             battleship.player2ready = True
-            battleship.copyPlayer2placedShips = copy.deepcopy(battleship.player2placedShips)
-
+            battleship.copyPlayer2placedShips = battleship.createShallowCopy(battleship.player2placedShips)
+        # add text saying battleship and add rows and cols
         add_text.add_text(battleship.SCREEN, 'Battleship')
-        
+        add_text.add_labels_targets(battleship.SCREEN)
+        # if it is player 1 turn, say that and print their boards
         if battleship.player1Turn:
-            add_text.add_text(battleship.SCREEN, 'Player 1 Turn')
+            add_text.add_text(battleship.SCREEN, 'Your Turn')
             battleship.printShipBoard(battleship.player1ShipBoard, battleship.player1placedShips, battleship.player2hits)
             battleship.printBoard(battleship.player1TargetBoard, battleship.player1hits, battleship.player1misses)
             add_text.add_labels_middle(battleship.SCREEN)
@@ -98,7 +108,7 @@ def run():
                         ended = battleship.gameIsOver(battleship.copyPlayer2placedShips)
                         if ended:
                             battleship.gameover = True
-                            add_text.add_text(battleship.SCREEN, 'Player 1 won!')
+                            add_text.add_text(battleship.SCREEN, 'You won!')
                             pygame.display.update()
                             pygame.time.wait(2000)
                             add_text.ask_play_again(battleship.SCREEN)
@@ -109,6 +119,7 @@ def run():
                         pygame.time.wait(1000)
                         pygame.event.clear()
                     battleship.player1Turn = False
+                
                 if not battleship.gameover:
                     add_text.add_text(battleship.SCREEN, 'AI is making a move...')
                     pygame.display.update()
@@ -132,7 +143,7 @@ def run():
                             ended = battleship.gameIsOver(battleship.copyPlayer1placedShips)
                             if ended:
                                 battleship.gameover = True
-                                add_text.add_text(battleship.SCREEN, 'Player 2 won!')
+                                add_text.add_text(battleship.SCREEN, 'AI won!')
                                 pygame.display.update()
                                 pygame.time.wait(2000)
                                 add_text.ask_play_again(battleship.SCREEN)

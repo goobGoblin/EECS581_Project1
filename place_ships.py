@@ -92,6 +92,7 @@ def placePlayer1Ships(screen, ships, placedShips, shipBoard):
 # same as above but for player 2
 def placePlayer2Ships(screen, ships, placedShips, shipBoard):
     shipsCopy = ships
+    print(shipsCopy)
     index = 0
     shipLength = shipsCopy[0]
     initialLength = shipLength
