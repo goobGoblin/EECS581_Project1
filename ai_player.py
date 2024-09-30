@@ -32,6 +32,7 @@ class BattleshipAI(ABC):
             hit = False
             tilesShot = battleship.tilesInShot(shipBoard, row, col, blastRadius)
             for row, col in tilesShot:
+                self.shots.add((row, col))
                 inShipsList = battleship.inShips(shipsPlaced, shipBoard[row][col])
                 if inShipsList:
                     hit = True
