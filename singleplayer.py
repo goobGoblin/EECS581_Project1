@@ -69,6 +69,16 @@ def run(difficulty):
             ai.placeShips(battleship.SCREEN, battleship.player2ships, battleship.player2placedShips, battleship.player2ShipBoard)
             battleship.player2ready = True
             battleship.copyPlayer2placedShips = battleship.createShallowCopy(battleship.player2placedShips)
+            if (difficulty == 'hard'):
+                enemy_ships = []
+                for rect in battleship.player1placedShips:
+                    x = battleship.getCol(battleship.player1ShipBoard, rect) + 1
+                    y = battleship.getRow(battleship.player1ShipBoard, rect) + 1
+                    enemy_ships.append((x, y))
+                ai.targets = enemy_ships
+                print(ai.targets)
+
+            print(battleship.player2placedShips)
         # add text saying battleship and add rows and cols
         add_text.add_text(battleship.SCREEN, 'Battleship')
         add_text.add_labels_targets(battleship.SCREEN)
@@ -127,10 +137,11 @@ def run(difficulty):
                     previous_hits_length = len(battleship.player2hits)
                     row, col = ai.make_move(ship_hit)
                     played = ai.checkForCollision(battleship.player2TargetBoard, battleship.player1ShipBoard, row, col, battleship.player2hits, battleship.player2misses, battleship.player1placedShips, battleship.copyPlayer1placedShips, battleship.player2BlastRadius)
-                    if len(battleship.player2hits) > previous_hits_length:
-                        print("Ship hit on last turn.")
-                        ship_hit = True
-                        ai.update_last_hit(row, col)
+                    if difficulty == 'medium':
+                        if len(battleship.player2hits) > previous_hits_length:
+                            print("Ship hit on last turn.")
+                            ship_hit = True
+                            ai.update_last_hit(row, col)
                     if played:
                         battleship.printBoard(battleship.player2TargetBoard, battleship.player2hits, battleship.player2misses)
                         pygame.display.update()

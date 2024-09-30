@@ -129,7 +129,7 @@ def main():
     CLOCK.tick(60)
     isSingleplayer = 1; #get_game_mode.set_mode(SCREEN) - FOR MULTIPLAYER IMPLEMENTATION
     if(isSingleplayer):
-        singleplayer.run("easy") #Maybe add multithreading in the future. (Harrison)
+        singleplayer.run("hard") #Maybe add multithreading in the future. (Harrison)
     # else:
         # multiplayer.run()
 
